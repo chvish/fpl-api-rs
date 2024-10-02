@@ -1,9 +1,7 @@
-// https://fantasy.premierleague.com/api/entry/4324/
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 use serde_json::Value;
 
-//
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Manager {
@@ -44,7 +42,7 @@ pub struct Manager {
     pub name_change_blocked: bool,
     #[serde(rename = "entered_events")]
     pub entered_events: Vec<i64>,
-    pub kit: String,
+    pub kit: Option<String>,
     #[serde(rename = "last_deadline_bank")]
     pub last_deadline_bank: i64,
     #[serde(rename = "last_deadline_value")]
@@ -146,12 +144,11 @@ pub struct Status {
     pub qualification_state: Value,
 }
 
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GWTeam{
+pub struct GWTeam {
     #[serde(rename = "active_chip")]
-    pub active_chip: Value,
+    pub active_chip: Option<String>,
     #[serde(rename = "automatic_subs")]
     pub automatic_subs: Vec<Value>,
     #[serde(rename = "entry_history")]
@@ -195,3 +192,20 @@ pub struct Pick {
     pub is_vice_captain: bool,
 }
 
+pub type Transfers = Vec<Transfer>;
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Transfer {
+    #[serde(rename = "element_in")]
+    pub element_in: i64,
+    #[serde(rename = "element_in_cost")]
+    pub element_in_cost: i64,
+    #[serde(rename = "element_out")]
+    pub element_out: i64,
+    #[serde(rename = "element_out_cost")]
+    pub element_out_cost: i64,
+    pub entry: i64,
+    pub event: i64,
+    pub time: String,
+}
