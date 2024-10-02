@@ -3,7 +3,7 @@
 
 ## Example
 
-```
+```rust
         let client = FPLClient::new();
         let manager = client.get_manager_details("3332624").await.unwrap();
         assert_eq!(manager.player_first_name, "Vishal".to_string());
