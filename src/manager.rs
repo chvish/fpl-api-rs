@@ -145,3 +145,53 @@ pub struct Status {
     #[serde(rename = "qualification_state")]
     pub qualification_state: Value,
 }
+
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct GWTeam{
+    #[serde(rename = "active_chip")]
+    pub active_chip: Value,
+    #[serde(rename = "automatic_subs")]
+    pub automatic_subs: Vec<Value>,
+    #[serde(rename = "entry_history")]
+    pub entry_history: EntryHistory,
+    pub picks: Vec<Pick>,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct EntryHistory {
+    pub event: i64,
+    pub points: i64,
+    #[serde(rename = "total_points")]
+    pub total_points: i64,
+    pub rank: i64,
+    #[serde(rename = "rank_sort")]
+    pub rank_sort: i64,
+    #[serde(rename = "overall_rank")]
+    pub overall_rank: i64,
+    #[serde(rename = "percentile_rank")]
+    pub percentile_rank: i64,
+    pub bank: i64,
+    pub value: i64,
+    #[serde(rename = "event_transfers")]
+    pub event_transfers: i64,
+    #[serde(rename = "event_transfers_cost")]
+    pub event_transfers_cost: i64,
+    #[serde(rename = "points_on_bench")]
+    pub points_on_bench: i64,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Pick {
+    pub element: i64,
+    pub position: i64,
+    pub multiplier: i64,
+    #[serde(rename = "is_captain")]
+    pub is_captain: bool,
+    #[serde(rename = "is_vice_captain")]
+    pub is_vice_captain: bool,
+}
+
