@@ -2,12 +2,21 @@ pub mod bootstrap;
 pub mod fixture;
 pub mod manager;
 
-use anyhow::Result;
 use reqwest;
 use serde::de::DeserializeOwned;
 
 pub struct FPLClient {
     base_url: String,
+}
+
+// 👇 Derive from thiserror::Error
+#[derive(thiserror::Error, Debug)]
+pub enum Error {
+    #[error("Request failed: {0}")]
+    RequestError(reqwest::Error),
+
+    #[error("JSON parsing error: {0}")]
+    JsonParseError(reqwest::Error),
 }
 
 impl FPLClient {
@@ -19,31 +28,34 @@ impl FPLClient {
 }
 
 impl FPLClient {
-    async fn get_data<T: DeserializeOwned>(&self, url: &str) -> Result<T> {
-        let val = reqwest::get(url).await?.json::<T>().await?;
+    async fn get_data<T: DeserializeOwned>(&self, url: &str) -> Result<T, Error> {
+        let val = reqwest::get(url)
+            .await.map_err(Error::RequestError)?
+            .json::<T>().await.map_err(Error::JsonParseError)?;
         Ok(val)
     }
 
-    pub async fn get_bootstrap_data(&self) -> Result<bootstrap::BootstrapData> {
-        let url = format!("{}/api/bootstrap-static/", self.base_url);
-        self.get_data::<bootstrap::BootstrapData>(&url).await
-    }
-    pub async fn get_fixtures(&self) -> Result<fixture::Fixtures> {
-        let url = format!("{}/api/fixtures/", self.base_url);
-        self.get_data::<fixture::Fixtures>(&url).await
+    pub async fn get_bootstrap_data(&self) -> Result<bootstrap::BootstrapData, Error> { 
+        let url = format!("{}/api/bootstrap-static/", self.base_url); 
+        self.get_data::<bootstrap::BootstrapData>(&url).await 
+    } 
+
+    pub async fn get_fixtures(&self) -> Result<fixture::Fixtures, Error> { 
+        let url = format!("{}/api/fixtures/", self.base_url); 
+        self.get_data::<fixture::Fixtures>(&url).await 
     }
 
-    pub async fn get_manager_details(&self, id: &str) -> Result<manager::Manager> {
+    pub async fn get_manager_details(&self, id: &str) -> Result<manager::Manager, Error> { 
         let url = format!("{}/api/entry/{}/", self.base_url, id);
         self.get_data::<manager::Manager>(&url).await
     }
 
-    pub async fn get_manager_transfers(&self, id: &str) -> Result<manager::Transfers> {
+    pub async fn get_manager_transfers(&self, id: &str) -> Result<manager::Transfers, Error> {
         let url = format!("{}/api/entry/{}/transfers/", self.base_url, id);
         self.get_data::<manager::Transfers>(&url).await
     }
 
-    pub async fn get_manager_team_for_gw(&self, id: &str, gw: &str) -> Result<manager::GWTeam> {
+    pub async fn get_manager_team_for_gw(&self, id: &str, gw: &str) -> Result<manager::GWTeam, Error> {
         let url = format!("{}/api/entry/{}/event/{}/picks/", self.base_url, id, gw);
         self.get_data::<manager::GWTeam>(&url).await
     }
