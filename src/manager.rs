@@ -33,7 +33,7 @@ pub struct Manager {
     #[serde(rename = "summary_event_points")]
     pub summary_event_points: i64,
     #[serde(rename = "summary_event_rank")]
-    pub summary_event_rank: i64,
+    pub summary_event_rank: Option<i64>,
     #[serde(rename = "current_event")]
     pub current_event: i64,
     pub leagues: Leagues,
