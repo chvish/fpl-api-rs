@@ -163,13 +163,13 @@ pub struct EntryHistory {
     pub points: i64,
     #[serde(rename = "total_points")]
     pub total_points: i64,
-    pub rank: i64,
+    pub rank: Option<i64>,
     #[serde(rename = "rank_sort")]
-    pub rank_sort: i64,
+    pub rank_sort: Option<i64>,
     #[serde(rename = "overall_rank")]
     pub overall_rank: i64,
     #[serde(rename = "percentile_rank")]
-    pub percentile_rank: i64,
+    pub percentile_rank: Option<i64>,
     pub bank: i64,
     pub value: i64,
     #[serde(rename = "event_transfers")]

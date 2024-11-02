@@ -91,7 +91,7 @@ mod tests {
         assert_eq!(manager.name, "Gakpo Ke Gunde".to_string());
 
         let gw_team = client
-            .get_manager_team_for_gw("3332624", "4")
+            .get_manager_team_for_gw("3332624", "10")
             .await
             .unwrap();
         assert_eq!(gw_team.active_chip, None);
